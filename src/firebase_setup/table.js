@@ -117,8 +117,8 @@ export const updateTableData = async (userId, tableId, indId, newData) => {
   }
 };
 
-export const updateTableTitle = async (userId, tableId, title) => {
-  const docRef = doc(firestore, 'analogCollection', tableId);
+export const updateTableTitle = async (userId, tableId, indId, title) => {
+  const docRef = doc(firestore, 'analogCollection', tableId, 'individualCollection', indId);
   
 
   try {
@@ -136,8 +136,8 @@ export const updateTableTitle = async (userId, tableId, title) => {
   }
 };
 
-export const updateTableNotes = async (userId, tableId, notes) => {
-  const docRef = doc(firestore, 'analogCollection', tableId);
+export const updateTableNotes = async (userId, tableId, indId, notes) => {
+  const docRef = doc(firestore, 'analogCollection', tableId, 'individualCollection', indId);
   
 
   try {

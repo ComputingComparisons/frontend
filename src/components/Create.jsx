@@ -49,13 +49,13 @@ const Create = () => {
     updateTableNotes(user.uid, params.analogId, notes);
   };
 
-  const debouncedUpdateTableNotes = debounce((user, analogId, notes) => {
-    updateTableNotes(user, analogId, notes);
+  const debouncedUpdateTableNotes = debounce((user, analogId, indId, notes) => {
+    updateTableNotes(user, analogId, indId, notes);
   }, 10000); // 10000 milliseconds = 10 seconds
 
   useEffect(() => {
     if (user && notes) {
-      updateTableNotes(user.uid, params.analogId, notes);
+      updateTableNotes(user.uid, params.analogId, params.indId, notes);
     }
   }, [tableData, user, debouncedUpdateTableNotes]);
 
@@ -65,7 +65,11 @@ const Create = () => {
         <>
           <div className="flex flex-col container relative h-auto mx-auto">
             <div className="fixed top-0 left-0 w-full z-50">
-              <Header title={tableData.title} tableId={params.analogId} />
+              <Header
+                title={tableData.title}
+                tableId={params.analogId}
+                indId={params.indId}
+              />
             </div>
             <div className=" flex flex-col pb-16 pt-10">
               <EditableTable

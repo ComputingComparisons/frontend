@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import Export from "./Export";
 import Import from "./Import";
 
-const Header = ({ data, title, tableId }) => {
+const Header = ({ data, title, tableId, indId }) => {
   const [head, setHead] = useState(title);
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ const Header = ({ data, title, tableId }) => {
   };
 
   const handleUpdateHeader = (event) => {
-    updateTableTitle(user.uid, tableId, head);
+    updateTableTitle(user.uid, tableId, indId, head);
   };
 
   return (

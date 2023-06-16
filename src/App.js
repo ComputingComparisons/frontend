@@ -1,4 +1,3 @@
-import handleSubmit from './handleSubmit';
 import { useRef } from 'react';
 import Navbar from './components/Navbar';
 import Home from './components/home/Home';

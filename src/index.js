@@ -11,6 +11,7 @@ import Signup from './components/Signup';
 import Create from './components/Create';
 import { useContext } from 'react';
 import ResetPassword from './components/ResetPassword';
+import Redirect from './components/home/Redirect';
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
@@ -27,7 +28,7 @@ root.render(
         <Route path="signup" element={<Signup />} />
         <Route path="reset" element={<ResetPassword />} />
         <Route path="create" element={<Create />} />
-        <Route path="/create/:analogId" element={<Create />} />
+        <Route path="/create/:analogId" element={<Redirect />} />
         <Route path="/create/:analogId/:indId" element={<Create />} />
         </Routes>
       </AuthProvider>

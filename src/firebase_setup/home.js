@@ -8,6 +8,8 @@ export const getAllAnalogies = async (userId) => {
   const analogies = [];
   querySnapshot.forEach((doc) => {
     console.log(`Document ID: ${doc.id}, Data: ${JSON.stringify(doc.data())}`);
+    const ref = collection(firestore, 'analogCollection', doc.id, 'individualCollection')
+    
     analogies.push({ id: doc.id, data: doc.data() });
   });
 
@@ -16,11 +18,11 @@ export const getAllAnalogies = async (userId) => {
   return analogies;
 };
 
-export const deleteTableById = async (userId, tableId) => {
+export const deleteTableById = async (userId, tableId, indId) => {
   try {
     // Get a reference to the document
     console.log(tableId)
-    const docRef = doc(firestore, 'analogCollection', tableId)
+    const docRef = doc(firestore, 'analogCollection', tableId, 'individualCollection', indId)
     // Get the document to check the user id
     const document = await getDoc(docRef);
 
@@ -37,3 +39,4 @@ export const deleteTableById = async (userId, tableId) => {
     console.error("Error removing document: ", error);
   }
 };
+
