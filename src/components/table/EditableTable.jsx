@@ -1,0 +1,124 @@
+import React, { useState, useEffect } from "react";
+import Row from "./Row";
+import RemoveColumn from "./RemoveColumn";
+import { updateTableData } from "../../firebase_setup/table";
+import { Button } from "flowbite-react";
+import { PlusIcon } from "@heroicons/react/24/solid";
+import { debounce } from "lodash";
+
+const EditableTable = ({ data, slug, user, tableId, indId }) => {
+  const [tableData, setTableData] = useState(data);
+
+  const handleAddRow = () => {
+    let updatedTableData;
+    setTableData((table) => {
+      let length = table[0] ? table[0].length : 1;
+      const row = [Array(length).fill("")];
+      updatedTableData = table.concat(row);
+      updateTableData(user.uid, tableId, indId, updatedTableData);
+      return updatedTableData;
+    });
+    console.log(updatedTableData);
+    //await updateTableData(user.uid, tableId, updatedTableData);
+  };
+
+  const handleAddColumn = () => {
+    setTableData((table) => {
+      return table.map((row) => row.concat(""));
+    });
+    //updateTableData(user.uid, tableId, tableData);
+  };
+
+  const handleRemoveRow = (e) => {
+    const rowIndex = Number(e.currentTarget.dataset.row);
+    let updatedTableData;
+    setTableData((table) => {
+      updatedTableData = [
+        ...table.slice(0, rowIndex),
+        ...table.slice(rowIndex + 1),
+      ];
+      updateTableData(user.uid, tableId, indId, updatedTableData);
+      return updatedTableData;
+    });
+
+    //console.log(updatedTableData);
+    //await updateTableData(user.uid, tableId, updatedTableData);
+  };
+
+  const handleRemoveColumn = async (e) => {
+    const columnIndex = Number(e.currentTarget.dataset.column);
+    setTableData((table) =>
+      table.map((row) => {
+        return [...row.slice(0, columnIndex), ...row.slice(columnIndex + 1)];
+      })
+    );
+    await updateTableData(user.uid, tableId, indId, tableData);
+  };
+
+  const handleEditData = (event) => {
+    const {
+      currentTarget: {
+        dataset: { row, column },
+      },
+      target: { value },
+    } = event;
+
+    setTableData((table) => {
+      let updatedRow = table.filter(
+        (item, i) => parseInt(i) === parseInt(row)
+      )[0];
+      updatedRow[column] = value;
+      return table.map((item, i) => (item[column] === row ? updatedRow : item));
+    });
+  };
+
+  const debouncedUpdateTableData = debounce((user, analogId, indId, data) => {
+    updateTableData(user, analogId, indId, data);
+  }, 1000); // 1000 milliseconds = 1 second
+
+  useEffect(() => {
+    if (user && tableData) {
+      debouncedUpdateTableData(user.uid, tableId, indId, tableData);
+    }
+  }, [tableData, user, tableId, debouncedUpdateTableData]);
+
+  return (
+    <div className="p-8">
+      {tableData.length ? (
+        <table>
+          <thead>
+            <th></th>
+            <th>Target</th>
+            <th></th>
+            <th>Source</th>
+            <th>Nuances</th>
+          </thead>
+          <tbody>
+            {tableData.map((row, index) => (
+              <Row
+                key={`row-${index}`}
+                handleEditData={handleEditData}
+                rowIndex={index}
+                row={row}
+                removeRow={handleRemoveRow}
+              />
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <div>Please add rows and columns</div>
+      )}
+      <input type="hidden" name={slug} value={JSON.stringify(tableData)} />
+      <Button
+        type="button"
+        onClick={handleAddRow}
+        className=" ml-8 my-1 flex flex-row"
+      >
+        <PlusIcon className="w-4" />
+        Add Row
+      </Button>
+    </div>
+  );
+};
+
+export default EditableTable;
