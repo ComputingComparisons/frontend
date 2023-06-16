@@ -5,7 +5,7 @@ import Home from './components/home/Home';
 function App() {
   const dataRef = useRef()
  
- 
+ //Home Component
   return (
     <>
       <Home />
