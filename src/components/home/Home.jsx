@@ -7,7 +7,12 @@ import { Card, Dropdown, Spinner } from "flowbite-react";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import DeleteAnalogModal from "./DeleteAnalogModal.jsx";
 import { DropdownDivider } from "flowbite-react/lib/esm/components/Dropdown/DropdownDivider";
-import image from "../../assets/table.jpg";
+import amber_image from "../../assets/amber_background.png";
+import blue_image from "../../assets/blue_background.png";
+import cyan_image from "../../assets/cyan_background.png";
+import green_image from "../../assets/green_background.png";
+import pink_image from "../../assets/pink_background.png";
+import red_image from "../../assets/red_background.png";
 
 const Home = () => {
   let params = useParams();
@@ -15,6 +20,8 @@ const Home = () => {
   const [user, setUser] = useState(null);
   const [modal, setModal] = useState(false);
   const [deleteId, setDeleteId] = useState();
+  let title = "Test";
+  const solidColors = [red_image, green_image];
 
   const { user: contextUser } = useContext(AuthContext);
 
@@ -43,19 +50,51 @@ const Home = () => {
     setModal(true);
   };
 
+  const getBGImage = (card) => {
+    
+    const title = card.data.title;
+    console.log("Title: " + title)
+
+    // if (title === undefined) {
+    //   return green_image
+    // }
+    // if (typeof title !== 'string') {
+    //   // Handle the case when title is not a string (e.g., provide a default image)
+    //   return green_image;
+    // }
+
+    let char = title.charAt(Math.floor(title.length / 2));
+    let num = char.charCodeAt(0) + title.length;
+    num %= 6;
+    console.log("First char: " + num);
+    if (num === 1) {
+      return red_image
+    } else if(num === 2) {
+      return green_image
+    } else if(num === 3) {
+      return amber_image
+    } else if(num === 4) {
+      return blue_image
+    } else if(num === 5) {
+      return pink_image
+    } else {
+      return cyan_image
+    }
+  };
+
   return (
     <div className="flex flex-row w-screen">
       <Navbar />
       <div className="overflow-y-auto h-screen w-full">
         {userAnalogs ? (
-          <div className="grid grid-cols-2 gap-4 lg:gap-8 p-4 lg:grid-cols-3 xl:grid-cols-4 lg:p-16">
+          <div className="grid grid-cols-2 gap-4 lg:gap-8 p-4 lg:grid-cols-3 xl:grid-cols-4 lg:p-16 ">
             {userAnalogs.map((i) => (
               <div className="max-w-sm">
                 <Card
-                  imgSrc={image}
+                  imgSrc={getBGImage(i)}
                   imgAlt="Meaningful alt text for an image that is not purely decorative"
                   href={`/create/${i.id}`}
-                >
+                  >
                   <div className="flex flex-row w-full justify-between items-center">
                     <h5 className="tracking-tight text-gray-900 dark:text-white">
                       {i.data.title}
