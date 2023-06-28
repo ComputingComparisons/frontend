@@ -51,17 +51,7 @@ const Home = () => {
   };
 
   const getBGImage = (card) => {
-    
     const title = card.data.title;
-    console.log("Title: " + title)
-
-    // if (title === undefined) {
-    //   return green_image
-    // }
-    // if (typeof title !== 'string') {
-    //   // Handle the case when title is not a string (e.g., provide a default image)
-    //   return green_image;
-    // }
 
     let char = title.charAt(Math.floor(title.length / 2));
     let num = char.charCodeAt(0) + title.length;
@@ -92,7 +82,7 @@ const Home = () => {
               <div className="max-w-sm">
                 <Card
                   imgSrc={getBGImage(i)}
-                  imgAlt="Meaningful alt text for an image that is not purely decorative"
+                  imgAlt="Single colored image"
                   href={`/create/${i.id}`}
                   >
                   <div className="flex flex-row w-full justify-between items-center">
