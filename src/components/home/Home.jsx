@@ -20,7 +20,6 @@ const Home = () => {
   const [user, setUser] = useState(null);
   const [modal, setModal] = useState(false);
   const [deleteId, setDeleteId] = useState();
-  const solidColors = [red_image, green_image];
 
   const { user: contextUser } = useContext(AuthContext);
 
