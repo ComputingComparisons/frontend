@@ -46,6 +46,23 @@ const Home = () => {
     setModal(true);
   };
 
+  const getBGImage = (card) => {
+    const color = card.data.color;
+    if (color === 'red') {
+      return red_image
+    } else if(color === 'green') {
+      return green_image
+    } else if(color === 'orange') {
+      return amber_image
+    } else if(color === 'blue') {
+      return blue_image
+    } else if(color === 'pink') {
+      return pink_image
+    } else {
+      return cyan_image
+    }
+  };
+
   return (
     <div className="flex flex-row w-screen">
       <Navbar />
