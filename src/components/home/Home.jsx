@@ -20,7 +20,6 @@ const Home = () => {
   const [user, setUser] = useState(null);
   const [modal, setModal] = useState(false);
   const [deleteId, setDeleteId] = useState();
-  const solidColors = [red_image, green_image];
 
   const { user: contextUser } = useContext(AuthContext);
 
@@ -50,21 +49,16 @@ const Home = () => {
   };
 
   const getBGImage = (card) => {
-    const title = card.data.title;
-
-    let char = title.charAt(Math.floor(title.length / 2));
-    let num = char.charCodeAt(0) + title.length;
-    num %= 6;
-    console.log("First char: " + num);
-    if (num === 1) {
+    const color = card.data.color;
+    if (color === 'red') {
       return red_image
-    } else if(num === 2) {
+    } else if(color === 'green') {
       return green_image
-    } else if(num === 3) {
+    } else if(color === 'orange') {
       return amber_image
-    } else if(num === 4) {
+    } else if(color === 'blue') {
       return blue_image
-    } else if(num === 5) {
+    } else if(color === 'pink') {
       return pink_image
     } else {
       return cyan_image

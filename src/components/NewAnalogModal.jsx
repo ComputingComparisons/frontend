@@ -19,10 +19,27 @@ const NewAnalogModal = ({ modal, onCreateClose }) => {
   const analogRef = useRef();
   const navigate = useNavigate();
 
+  const getColor = () =>{
+    const num = Math.floor(Math.random() * 6);
+    if (num === 1) {
+      return 'red'
+    } else if(num === 2) {
+      return 'green'
+    } else if(num === 3) {
+      return 'orange'
+    } else if(num === 4) {
+      return 'blue'
+    } else if(num === 5) {
+      return 'pink'
+    } else {
+      return 'cyan'
+    }
+  }
+
   const handleAddDataClick = useCallback(async () => {
     if (user) {
       navigate(
-        `/create/${await addDataToFirestore(user.uid, analogRef.current.value)}`
+        `/create/${await addDataToFirestore(user.uid, analogRef.current.value, getColor())}`
       );
     } else {
       console.error("User not signed in.");
