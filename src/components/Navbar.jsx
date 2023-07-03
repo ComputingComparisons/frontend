@@ -18,11 +18,24 @@ import image from "../assets/logo.png";
 import NewAnalogModal from "./NewAnalogModal";
 import Export from "./create/Export";
 import Import from "./home/Import";
+import NewProfileModal from "./NewProfileModal";
+
+//import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+//import { faHome, faUser } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => {
   const [collapse, setCollapse] = useState(false);
   const [createModal, setCreateModal] = useState(false);
   const [importModal, setImportModal] = useState(false);
+  const [profileModal, setProfileModal] = useState(false);
+
+  const onProfileClick = (e) => {
+    setProfileModal(true);
+  };
+
+  const onProfileClose = (e) => {
+    setProfileModal(false);
+  };
 
   const onCreateClick = (e) => {
     setCreateModal(true);
@@ -48,7 +61,10 @@ const Navbar = () => {
             <Sidebar.Item href="#" icon={HomeIcon}>
               Home
             </Sidebar.Item>
-            <Sidebar.Item href="profile" icon={UserIcon}>
+            <Sidebar.Item 
+              href="#" 
+              icon={UserIcon}
+              onClick={(e) => onProfileClick(e)}>
               Profile
             </Sidebar.Item>
             <Sidebar.Item
@@ -67,6 +83,7 @@ const Navbar = () => {
               New Analogy
             </Sidebar.Item>
             <NewAnalogModal modal={createModal} onCreateClose={onCreateClose} />
+            <NewProfileModal profileModal={profileModal} onProfileClose={onProfileClose} />
             <Import modal={importModal} closeModal={onImportClose} />
           </Sidebar.ItemGroup>
         </Sidebar.Items>
