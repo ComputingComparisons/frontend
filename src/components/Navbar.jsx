@@ -11,6 +11,7 @@ import {
 import { HomeIcon, PlusIcon, UserIcon } from "@heroicons/react/24/solid";
 import image from "../assets/logo.png";
 import NewAnalogModal from "./NewAnalogModal";
+import NewProfileModal from "./NewProfileModal";
 
 //import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 //import { faHome, faUser } from "@fortawesome/free-solid-svg-icons";
@@ -18,6 +19,15 @@ import NewAnalogModal from "./NewAnalogModal";
 const Navbar = () => {
   const [collapse, setCollapse] = useState(false);
   const [modal, setModal] = useState(false);
+  const [profileModal, setProfileModal] = useState(false);
+
+  const onProfileClick = (e) => {
+    setProfileModal(true);
+  };
+
+  const onProfileClose = (e) => {
+    setProfileModal(false);
+  };
 
   const onCreateClick = (e) => {
     setModal(true);
@@ -35,7 +45,10 @@ const Navbar = () => {
             <Sidebar.Item href="#" icon={HomeIcon}>
               Home
             </Sidebar.Item>
-            <Sidebar.Item href="profile" icon={UserIcon}>
+            <Sidebar.Item 
+              href="#" 
+              icon={UserIcon}
+              onClick={(e) => onProfileClick(e)}>
               Profile
             </Sidebar.Item>
             <Sidebar.Item
@@ -47,6 +60,7 @@ const Navbar = () => {
               New Analogy
             </Sidebar.Item>
             <NewAnalogModal modal={modal} onCreateClose={onCreateClose} />
+            <NewProfileModal profileModal={profileModal} onProfileClose={onProfileClose} />
           </Sidebar.ItemGroup>
         </Sidebar.Items>
       </Sidebar>
