@@ -42,8 +42,7 @@ const NewProfileModal = ({ profileModal, onProfileClose }) => {
               Profile
             </h3>
             <div>
-              
-            <Button className="border border-black" onClick={handleLogout}>Logout</Button>
+              <Button className="border border-black" onClick={handleLogout}>Logout</Button>
             </div>
           </div>
         </Modal.Body>
