@@ -61,8 +61,8 @@ const Navbar = () => {
             <Sidebar.Item href="#" icon={HomeIcon}>
               Home
             </Sidebar.Item>
-            <Sidebar.Item 
-              href="#" 
+            <Sidebar.Item
+              href="#"
               icon={UserIcon}
               onClick={(e) => onProfileClick(e)}>
               Profile
