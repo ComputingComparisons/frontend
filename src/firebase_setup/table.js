@@ -18,12 +18,30 @@ export const addDataToFirestore = async (userId, title="untitled") => {
     {header1: "", header2: "", header3: ""}
   ];
 
+  const getColor = () =>{
+    const num = Math.floor(Math.random() * 6);
+    if (num === 1) {
+      return 'red'
+    } else if(num === 2) {
+      return 'green'
+    } else if(num === 3) {
+      return 'orange'
+    } else if(num === 4) {
+      return 'blue'
+    } else if(num === 5) {
+      return 'pink'
+    } else {
+      return 'cyan'
+    }
+  }
+
   const table = {
     uid: userId,
     headers: headers,
     data: data,
     title: title,
     notes: "",
+    color: getColor(),
   }
 
   const collectionRef = collection(firestore, 'analogCollection');
