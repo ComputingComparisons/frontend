@@ -11,9 +11,8 @@ const Profile = () => {
   };
 
   if (!user) {
-    console.log(user);
     navigate("/login");
-    return null;
+    return <></>;
   }
   return (
     <>

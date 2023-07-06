@@ -6,11 +6,30 @@ import {
   ArrowUpOnSquareIcon,
   HomeIcon,
 } from "@heroicons/react/24/solid";
-import { updateTableTitle } from "../../firebase_setup/table";
+import { importAnalogy, updateTableTitle } from "../../firebase_setup/table";
 import { useNavigate } from "react-router-dom";
 
-const Import = () => {
+const Import = ({ tableId, user }) => {
   const [uploadModal, setUploadModal] = useState(false);
+  const [selectedFile, setSelectedFile] = useState();
+
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
+  const handleUpload = async () => {
+    if (selectedFile) {
+      const reader = new FileReader();
+      reader.onload = async function (e) {
+        // 'e.target.result' contains the text of the file
+        const fileContent = e.target.result;
+        const jsonData = JSON.parse(fileContent);
+        await importAnalogy(user.uid, tableId, jsonData);
+        setUploadModal(false);
+      };
+      reader.readAsText(selectedFile);
+    }
+  };
 
   return (
     <>
@@ -38,11 +57,12 @@ const Import = () => {
               <FileInput
                 helperText="Upload JSON to populate the table."
                 id="file"
+                onChange={handleFileChange}
               />
             </div>
 
             <div className="w-full flex justify-center pt-2">
-              <Button onClick={""}>Import</Button>
+              <Button onClick={handleUpload}>Import</Button>
             </div>
           </Modal.Body>
         </Modal>

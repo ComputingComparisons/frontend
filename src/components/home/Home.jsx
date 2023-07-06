@@ -2,7 +2,7 @@ import { getAllAnalogies } from "../../firebase_setup/home";
 import React, { useContext, useState, useEffect } from "react";
 import AuthContext from "../../AuthContext";
 import Navbar from "../Navbar";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Card, Dropdown, Spinner } from "flowbite-react";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import DeleteAnalogModal from "./DeleteAnalogModal.jsx";
@@ -15,7 +15,7 @@ const Home = () => {
   const [user, setUser] = useState(null);
   const [modal, setModal] = useState(false);
   const [deleteId, setDeleteId] = useState();
-
+  const navigate = useNavigate();
   const { user: contextUser } = useContext(AuthContext);
 
   useEffect(() => {
@@ -42,6 +42,12 @@ const Home = () => {
   const onDeleteOpen = (e) => {
     setModal(true);
   };
+
+  useEffect(() => {
+    if (!contextUser) {
+      navigate("/login");
+    }
+  }, [user]);
 
   return (
     <div className="flex flex-row w-screen">

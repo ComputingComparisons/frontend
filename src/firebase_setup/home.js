@@ -18,11 +18,11 @@ export const getAllAnalogies = async (userId) => {
   return analogies;
 };
 
-export const deleteTableById = async (userId, tableId, indId) => {
+export const deleteTableById = async (userId, tableId) => {
   try {
     // Get a reference to the document
     console.log(tableId)
-    const docRef = doc(firestore, 'analogCollection', tableId, 'individualCollection', indId)
+    const docRef = doc(firestore, 'analogCollection', tableId)
     // Get the document to check the user id
     const document = await getDoc(docRef);
 

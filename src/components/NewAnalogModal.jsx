@@ -1,7 +1,5 @@
 import React, { useContext, useState, useCallback, useRef } from "react";
 import AuthContext from "../AuthContext";
-import Column from "./Column";
-import EditableTable from "./table/EditableTable";
 import { addDataToFirestore } from "../firebase_setup/table";
 import {
   Sidebar,
