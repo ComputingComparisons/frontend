@@ -29,7 +29,7 @@ const Redirect = () => {
     fetchData();
     if (user && userAnalogs) {
       console.log(userAnalogs);
-      navigate(`/create/${userAnalogs[0].id}`);
+      navigate(`/create/${userAnalogs[0].path}`);
     }
   }, [params, user, userAnalogs]);
 
