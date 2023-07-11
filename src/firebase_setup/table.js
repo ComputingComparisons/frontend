@@ -1,8 +1,10 @@
 import { firestore } from "./firebase";
 import { getFirestore,addDoc, collection, getDoc, doc, updateDoc, query, where, getDocs, deleteDoc  } from "@firebase/firestore";
+import { getFirestore,addDoc, collection, getDoc, doc, updateDoc, query, where, getDocs, deleteDoc  } from "@firebase/firestore";
 
 // Add data to your "table" (collection) with headers, 3 columns, and the user's UID
 
+export const addDataToFirestore = async (userId, title="") => {
 export const addDataToFirestore = async (userId, title="") => {
   if (title == ""){
     title = "NewAnalogy"
@@ -158,6 +160,7 @@ export const updateMainTitle = async (userId, tableId, title) => {
     console.error("Error updating document: ", error);
   }
 };
+
 
 export const getMainTitle = async (userId, tableId) => {
   const docRef = doc(firestore, 'analogCollection', tableId);
