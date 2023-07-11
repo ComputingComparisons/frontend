@@ -80,7 +80,7 @@ const EditableTable = ({ data, slug, user, tableId, indId }) => {
     if (user && tableData) {
       debouncedUpdateTableData(user.uid, tableId, indId, tableData);
     }
-  }, [tableData, user, tableId, debouncedUpdateTableData]);
+  }, [tableData, user, tableId]);
 
   return (
     <div className="p-8">

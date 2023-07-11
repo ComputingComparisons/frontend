@@ -1,11 +1,7 @@
 import { Button, Tabs, Tooltip } from "flowbite-react";
 import React, { useContext, useRef, useState } from "react";
 import AuthContext from "../../AuthContext";
-import {
-  ArrowDownOnSquareIcon,
-  ArrowUpOnSquareIcon,
-  HomeIcon,
-} from "@heroicons/react/24/solid";
+import { ArrowUpOnSquareIcon } from "@heroicons/react/24/solid";
 import {
   getIndividualAnalogies,
   getTableById,

@@ -57,10 +57,8 @@ export const addDataToFirestore = async (userId, title="") => {
       const docRef = await addDoc(collectionRef, mainData)
       const collectionRef2 = collection(firestore, 'analogCollection', docRef.id, 'individualCollection');
       const docRef2 = await addDoc(collectionRef2, table)
-      console.log(`Document added with ID: ${docRef.id}`);
       return(docRef.id);
     } catch (error) {
-      console.log(userId)
       console.error("Error adding document: ", error);
     }
   ;
@@ -69,9 +67,7 @@ export const addDataToFirestore = async (userId, title="") => {
 export const getTableById = async (userId, tableId) => {
   const docRef = doc(firestore, 'analogCollection', tableId)
   const document = await getDoc(docRef)
-  console.log(document.data())
   if (document.data().uid === userId) {
-    console.log(document.data())
     const tableData = document.data();
 
     return tableData;
@@ -84,9 +80,7 @@ export const getTableById = async (userId, tableId) => {
 export const getTableById2 = async (userId, tableId, indId) => {
   const docRef = doc(firestore, 'analogCollection', tableId, 'individualCollection', indId)
   const document = await getDoc(docRef)
-  console.log(document.data())
   if (document.data().uid === userId) {
-    console.log(document.data())
     const tableData = document.data();
 
     // Create a new array of rows with the keys in the desired order
@@ -122,7 +116,6 @@ export const updateTableData = async (userId, tableId, indId, newData) => {
     if (document.data().uid === userId) {
       const updatedData = { ...document.data(), data: dataFormat };
       await updateDoc(docRef, updatedData);
-      console.log(`Table data updated for document ID: ${docRef.id}`);
     } else {
       console.log("User does not have permission to update this document");
     }
@@ -141,7 +134,6 @@ export const updateTableTitle = async (userId, tableId, indId, title) => {
     if (document.data().uid === userId) {
       const updatedData = { ...document.data(), title: title };
       await updateDoc(docRef, updatedData);
-      console.log(`Table data updated for document ID: ${docRef.id}`);
     } else {
       console.log("User does not have permission to update this document");
     }
@@ -159,7 +151,6 @@ export const updateMainTitle = async (userId, tableId, title) => {
     if (document.data().uid === userId) {
       const updatedData = { ...document.data(), title: title };
       await updateDoc(docRef, updatedData);
-      console.log(`Table data updated for document ID: ${docRef.id}`);
     } else {
       console.log("User does not have permission to update this document");
     }
@@ -176,7 +167,6 @@ export const getMainTitle = async (userId, tableId) => {
 
     if (document.data().uid === userId) {
       const mainTitle = document.data().title;
-      console.log(`Main title: ${mainTitle}`);
       return mainTitle;
     } else {
       console.log("User does not have permission to access this document");
@@ -194,7 +184,6 @@ export const updateTableNotes = async (userId, tableId, indId, notes) => {
     if (document.data().uid === userId) {
       const updatedData = { ...document.data(), notes: notes };
       await updateDoc(docRef, updatedData);
-      console.log(`Table data updated for document ID: ${docRef.id}`);
     } else {
       console.log("User does not have permission to update this document");
     }
@@ -209,7 +198,6 @@ export const getIndividualAnalogies = async (userId, tableId) => {
   const querySnapshot = await getDocs(q);
   const analogies = [];
   querySnapshot.forEach((doc) => {
-    console.log(`Document ID: ${doc.id}, Data: ${JSON.stringify(doc.data())}`);
     analogies.push({ path: `${tableId}/${doc.id}`, id: doc.id, data: doc.data() });
   });
 
@@ -239,10 +227,8 @@ export const createIndividualAnalogy = async (userId, tableId) => {
   }
   try {
   const docRef = await addDoc(collectionRef, table)
-  console.log(docRef)
   return([{ path: `${tableId}/${docRef.id}`, id: docRef.id, data: await getTableById2(userId, tableId, docRef.id) }]);
   } catch (error) {
-    console.log(userId)
     console.error("Error adding document: ", error);
   };
 }
@@ -250,7 +236,6 @@ export const createIndividualAnalogy = async (userId, tableId) => {
 export const deleteIndividualById = async (userId, tableId, indId) => {
   try {
     // Get a reference to the document
-    console.log(tableId)
     const docRef = doc(firestore, 'analogCollection', tableId, 'individualCollection', indId)
     // Get the document to check the user id
     const document = await getDoc(docRef);
@@ -270,28 +255,39 @@ export const deleteIndividualById = async (userId, tableId, indId) => {
   }
 };
 
-export const importAnalogy = async (userId, tableId, jsonData) => {
+export const importAnalogy = async (userId, jsonData) => {
 
-  await updateMainTitle(userId, tableId, jsonData.title);
-  const test = jsonData.individualCollection;
-  jsonData.individualCollection.forEach(async (i) => {
-  const collectionRef = collection(firestore, 'analogCollection', tableId, 'individualCollection')
-  const title = i.data.title;
-  const headers = ["header1", "header2", "header3"];
-  const data = i.data.data;
-  const table = {
+  const mainData = {
+    title: jsonData.title,
+    date_created: new Date(),
     uid: userId,
-    headers: headers,
-    data: data,
-    title: title,
-    notes: i.data.notes,
-    date_created: new Date()
   }
-  try {
-  const docRef = await addDoc(collectionRef, table);
-  } catch (error) {
-    console.log(userId)
-    console.error("Error adding document: ", error);
-  }});
-  window.location.reload(false);
+
+  const collectionRef = collection(firestore, 'analogCollection');
+    try {
+      const docRef = await addDoc(collectionRef, mainData)
+      const collectionRef2 = collection(firestore, 'analogCollection', docRef.id, 'individualCollection');
+      jsonData.individualCollection.forEach(async (i) => {
+        const title = i.data.title;
+        const headers = ["header1", "header2", "header3"];
+        const data = i.data.data;
+        const table = {
+          uid: userId,
+          headers: headers,
+          data: data,
+          title: title,
+          notes: i.data.notes,
+          date_created: new Date()
+        }
+        try {
+        const docRef = await addDoc(collectionRef2, table);
+        } catch (error) {
+          console.error("Error adding document: ", error);
+        }});
+      return(docRef.id);
+    } catch (error) {
+      console.log(userId)
+      console.error("Error adding document: ", error);
+    }
+  ;
 };

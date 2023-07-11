@@ -13,7 +13,6 @@ import {
 } from "../../firebase_setup/table";
 import { useNavigate } from "react-router-dom";
 import Export from "./Export";
-import Import from "./Import";
 
 const Header = ({ title, tableId, indId }) => {
   const [mainTitle, setMainTitle] = useState("");
@@ -86,7 +85,6 @@ const Header = ({ title, tableId, indId }) => {
           </div>
         </div>
         <div className="flex flex-row pr-4">
-          <Import user={user} tableId={tableId} />
           <Export user={user} tableId={tableId} />
         </div>
       </div>

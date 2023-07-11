@@ -7,13 +7,11 @@ const Profile = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const handleLogout = async () => {
-    await signOutApp();
+    if (await signOutApp()) {
+      navigate("/login");
+    }
   };
 
-  if (!user) {
-    navigate("/login");
-    return <></>;
-  }
   return (
     <>
       <h1>Profile</h1>

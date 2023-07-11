@@ -33,8 +33,6 @@ const Home = () => {
     async function fetchData() {
       setUserAnalogs(await getAllAnalogies(user.uid));
     }
-
-    console.log(user);
     if (user) {
       fetchData();
     }
@@ -72,7 +70,7 @@ const Home = () => {
         {userAnalogs ? (
           <div className="grid grid-cols-2 gap-4 lg:gap-8 p-4 lg:grid-cols-3 xl:grid-cols-4 lg:p-16 ">
             {userAnalogs.map((i) => (
-              <div className="max-w-sm">
+              <div className="max-w-sm" key={i.id}>
                 <Card
                   imgSrc={getBGImage(i)}
                   imgAlt="Single colored image"
@@ -81,6 +79,12 @@ const Home = () => {
                   <div className="flex flex-row w-full justify-between items-center">
                     <h5 className="tracking-tight text-gray-900 dark:text-white">
                       {i.data.title}
+                      <p className=" text-xs text-gray-500">
+                        {i.data.date_created
+                          ? "Created: " +
+                            i.data.date_created.toDate().toLocaleString()
+                          : "\n"}
+                      </p>
                     </h5>
                     <EllipsisVerticalIcon
                       className="h-5 hover:bg-white rounded-full"
