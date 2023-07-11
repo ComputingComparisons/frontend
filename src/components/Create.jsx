@@ -32,8 +32,6 @@ const Create = () => {
         await getTableById2(user.uid, params.analogId, params.indId)
       );
     }
-
-    console.log(user);
     if (user) {
       fetchData();
     }
@@ -57,13 +55,8 @@ const Create = () => {
     if (user && notes) {
       updateTableNotes(user.uid, params.analogId, params.indId, notes);
     }
-  }, [tableData, user, debouncedUpdateTableNotes]);
+  }, [tableData, user]);
 
-  useEffect(() => {
-    if (!contextUser) {
-      navigate("/login");
-    }
-  }, [user]);
   return (
     <>
       {tableData ? (

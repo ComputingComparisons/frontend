@@ -9,9 +9,9 @@ import {
 import { importAnalogy, updateTableTitle } from "../../firebase_setup/table";
 import { useNavigate } from "react-router-dom";
 
-const Import = ({ tableId, user }) => {
-  const [uploadModal, setUploadModal] = useState(false);
+const Import = ({ modal, closeModal }) => {
   const [selectedFile, setSelectedFile] = useState();
+  const { user } = useContext(AuthContext);
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -24,8 +24,9 @@ const Import = ({ tableId, user }) => {
         // 'e.target.result' contains the text of the file
         const fileContent = e.target.result;
         const jsonData = JSON.parse(fileContent);
-        await importAnalogy(user.uid, tableId, jsonData);
-        setUploadModal(false);
+        await importAnalogy(user.uid, jsonData);
+        closeModal();
+        window.location.reload();
       };
       reader.readAsText(selectedFile);
     }
@@ -33,20 +34,12 @@ const Import = ({ tableId, user }) => {
 
   return (
     <>
-      <Button
-        className=" mr-2"
-        disabled={false}
-        onClick={(e) => setUploadModal(true)}
-      >
-        <ArrowDownOnSquareIcon className="lg:mr-2 h-5 w-5" />
-        <p className="hidden lg:inline">Import</p>
-      </Button>
       <React.Fragment>
         <Modal
-          show={uploadModal}
+          show={modal}
           size="md"
           popup={true}
-          onClose={(e) => setUploadModal(false)}
+          onClose={(e) => closeModal(e)}
         >
           <Modal.Header>Import Analogy</Modal.Header>
           <Modal.Body>
@@ -57,6 +50,7 @@ const Import = ({ tableId, user }) => {
               <FileInput
                 helperText="Upload JSON to populate the table."
                 id="file"
+                accept=".json"
                 onChange={handleFileChange}
               />
             </div>

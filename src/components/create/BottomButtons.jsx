@@ -20,7 +20,6 @@ const BottomButtons = ({ data, user }) => {
     async function fetchData() {
       setUserAnalogs(await getIndividualAnalogies(user.uid, params.analogId));
     }
-
     fetchData();
   }, [params]);
 
@@ -51,6 +50,7 @@ const BottomButtons = ({ data, user }) => {
         <div className="flex flex-row">
           {userAnalogs.map((i) => (
             <Button
+              key={`tab-${i.id}`}
               className={`mx-1`}
               href={`/create/${i.path}`}
               color={params.indId === i.id ? "blue" : "info"}
