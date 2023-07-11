@@ -1,10 +1,24 @@
 import { firestore } from "./firebase";
 import { getFirestore,addDoc, collection, getDoc, doc, updateDoc, query, where, getDocs, deleteDoc  } from "@firebase/firestore";
-import { getFirestore,addDoc, collection, getDoc, doc, updateDoc, query, where, getDocs, deleteDoc  } from "@firebase/firestore";
 
 // Add data to your "table" (collection) with headers, 3 columns, and the user's UID
+const getColor = () =>{
+  const num = Math.floor(Math.random() * 6);
+  if (num === 1) {
+    return 'red'
+  } else if(num === 2) {
+    return 'green'
+  } else if(num === 3) {
+    return 'orange'
+  } else if(num === 4) {
+    return 'blue'
+  } else if(num === 5) {
+    return 'pink'
+  } else {
+    return 'cyan'
+  }
+}
 
-export const addDataToFirestore = async (userId, title="") => {
 export const addDataToFirestore = async (userId, title="") => {
   if (title == ""){
     title = "NewAnalogy"
@@ -19,23 +33,6 @@ export const addDataToFirestore = async (userId, title="") => {
     {header1: "", header2: "", header3: ""},
     {header1: "", header2: "", header3: ""}
   ];
-
-  const getColor = () =>{
-    const num = Math.floor(Math.random() * 6);
-    if (num === 1) {
-      return 'red'
-    } else if(num === 2) {
-      return 'green'
-    } else if(num === 3) {
-      return 'orange'
-    } else if(num === 4) {
-      return 'blue'
-    } else if(num === 5) {
-      return 'pink'
-    } else {
-      return 'cyan'
-    }
-  }
 
   const table = {
     uid: userId,
@@ -264,6 +261,7 @@ export const importAnalogy = async (userId, jsonData) => {
     title: jsonData.title,
     date_created: new Date(),
     uid: userId,
+    color: getColor()
   }
 
   const collectionRef = collection(firestore, 'analogCollection');
