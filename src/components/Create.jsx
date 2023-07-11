@@ -1,8 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import AuthContext from "../AuthContext";
-import Column from "./Column";
 import EditableTable from "./table/EditableTable";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getTableById2, updateTableNotes } from "../firebase_setup/table";
 import { Spinner, Textarea, TextInput } from "flowbite-react";
 import BottomButtons from "./create/BottomButtons";
@@ -15,6 +14,7 @@ const Create = () => {
   const [tableData, setTableData] = useState();
   const [user, setUser] = useState(null);
   const [notes, setNotes] = useState(null);
+  const navigate = useNavigate();
 
   const { user: contextUser } = useContext(AuthContext);
 
@@ -32,8 +32,6 @@ const Create = () => {
         await getTableById2(user.uid, params.analogId, params.indId)
       );
     }
-
-    console.log(user);
     if (user) {
       fetchData();
     }
@@ -57,7 +55,7 @@ const Create = () => {
     if (user && notes) {
       updateTableNotes(user.uid, params.analogId, params.indId, notes);
     }
-  }, [tableData, user, debouncedUpdateTableNotes]);
+  }, [tableData, user]);
 
   return (
     <>

@@ -1,7 +1,7 @@
 import React from 'react';
 import {createRoot} from 'react-dom/client';
 import './index.css';
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Signin from "./components/Signin"
@@ -12,24 +12,25 @@ import Create from './components/Create';
 import { useContext } from 'react';
 import ResetPassword from './components/ResetPassword';
 import Redirect from './components/home/Redirect';
+import AuthContext from './AuthContext';
+import { ProtectedRoute } from './ProtectedRoute';
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
-
 
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-        <Route path="/" element={<App />} />
         <Route path="login" element={<Signin />} />
-        <Route path="profile" element={<Profile />} />
         <Route path="signup" element={<Signup />} />
         <Route path="reset" element={<ResetPassword />} />
-        <Route path="create" element={<Create />} />
-        <Route path="/create/:analogId" element={<Redirect />} />
-        <Route path="/create/:analogId/:indId" element={<Create />} />
+        <Route path="/" element={<ProtectedRoute><App /></ProtectedRoute>} />
+        <Route path="profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        <Route path="create" element={<ProtectedRoute><Create /></ProtectedRoute>} />
+        <Route path="/create/:analogId" element={<ProtectedRoute><Redirect /></ProtectedRoute>} />
+        <Route path="/create/:analogId/:indId" element={<ProtectedRoute><Create /></ProtectedRoute>} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

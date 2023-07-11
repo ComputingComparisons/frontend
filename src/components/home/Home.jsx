@@ -2,7 +2,7 @@ import { getAllAnalogies } from "../../firebase_setup/home";
 import React, { useContext, useState, useEffect } from "react";
 import AuthContext from "../../AuthContext";
 import Navbar from "../Navbar";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Card, Dropdown, Spinner } from "flowbite-react";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import DeleteAnalogModal from "./DeleteAnalogModal.jsx";
@@ -20,7 +20,7 @@ const Home = () => {
   const [user, setUser] = useState(null);
   const [modal, setModal] = useState(false);
   const [deleteId, setDeleteId] = useState();
-
+  const navigate = useNavigate();
   const { user: contextUser } = useContext(AuthContext);
 
   useEffect(() => {
@@ -33,8 +33,6 @@ const Home = () => {
     async function fetchData() {
       setUserAnalogs(await getAllAnalogies(user.uid));
     }
-
-    console.log(user);
     if (user) {
       fetchData();
     }
@@ -50,18 +48,18 @@ const Home = () => {
 
   const getBGImage = (card) => {
     const color = card.data.color;
-    if (color === 'red') {
-      return red_image
-    } else if(color === 'green') {
-      return green_image
-    } else if(color === 'orange') {
-      return amber_image
-    } else if(color === 'blue') {
-      return blue_image
-    } else if(color === 'pink') {
-      return pink_image
+    if (color === "red") {
+      return red_image;
+    } else if (color === "green") {
+      return green_image;
+    } else if (color === "orange") {
+      return amber_image;
+    } else if (color === "blue") {
+      return blue_image;
+    } else if (color === "pink") {
+      return pink_image;
     } else {
-      return cyan_image
+      return cyan_image;
     }
   };
 
@@ -72,15 +70,21 @@ const Home = () => {
         {userAnalogs ? (
           <div className="grid grid-cols-2 gap-4 lg:gap-8 p-4 lg:grid-cols-3 xl:grid-cols-4 lg:p-16 ">
             {userAnalogs.map((i) => (
-              <div className="max-w-sm">
+              <div className="max-w-sm" key={i.id}>
                 <Card
                   imgSrc={getBGImage(i)}
                   imgAlt="Single colored image"
                   href={`/create/${i.id}`}
-                  >
+                >
                   <div className="flex flex-row w-full justify-between items-center">
                     <h5 className="tracking-tight text-gray-900 dark:text-white">
                       {i.data.title}
+                      <p className=" text-xs text-gray-500">
+                        {i.data.date_created
+                          ? "Created: " +
+                            i.data.date_created.toDate().toLocaleString()
+                          : "\n"}
+                      </p>
                     </h5>
                     <EllipsisVerticalIcon
                       className="h-5 hover:bg-white rounded-full"

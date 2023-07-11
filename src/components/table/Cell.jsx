@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { PencilSquareIcon } from "@heroicons/react/24/outline";
 
 const Cell = ({ cell, rowIndex, cellIndex, handleEditData }) => {
   const [hasFocus, setHasFocus] = useState(false);

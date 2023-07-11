@@ -30,7 +30,7 @@ const Row = ({ row, rowIndex, handleEditData, removeRow }) => {
       {row.map((cell, index) => (
         <>
           <Cell
-            key={`cell-${index}`}
+            key={`cell-${index}-${rowIndex}`}
             handleEditData={handleEditData}
             rowIndex={rowIndex}
             cellIndex={index}
