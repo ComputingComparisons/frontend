@@ -3,7 +3,7 @@ import { getFirestore,addDoc, collection, getDoc, doc, updateDoc, query, where, 
 
 // Add data to your "table" (collection) with headers, 3 columns, and the user's UID
 
-export const addDataToFirestore = async (userId, title="untitled", color) => {
+export const addDataToFirestore = async (userId, title="untitled") => {
   if (title == ""){
     title = "untitled"
   };
