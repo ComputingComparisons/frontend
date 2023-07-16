@@ -5,7 +5,6 @@ import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Signin from "./components/Signin"
-import Profile from './components/Profile';
 import { AuthProvider } from "./AuthProvider";
 import Signup from './components/Signup';
 import Create from './components/Create';
@@ -27,7 +26,6 @@ root.render(
         <Route path="signup" element={<Signup />} />
         <Route path="reset" element={<ResetPassword />} />
         <Route path="/" element={<ProtectedRoute><App /></ProtectedRoute>} />
-        <Route path="profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="create" element={<ProtectedRoute><Create /></ProtectedRoute>} />
         <Route path="/create/:analogId" element={<ProtectedRoute><Redirect /></ProtectedRoute>} />
         <Route path="/create/:analogId/:indId" element={<ProtectedRoute><Create /></ProtectedRoute>} />
