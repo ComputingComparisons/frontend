@@ -8,16 +8,9 @@ import {
   TextInput,
   Modal,
 } from "flowbite-react";
-import {
-  HomeIcon,
-  PlusIcon,
-  UserIcon,
-  ArrowDownOnSquareIcon,
-} from "@heroicons/react/24/solid";
+import { HomeIcon, PlusIcon, UserIcon } from "@heroicons/react/24/solid";
 import image from "../assets/logo.png";
 import NewAnalogModal from "./NewAnalogModal";
-import Export from "./create/Export";
-import Import from "./home/Import";
 import NewProfileModal from "./NewProfileModal";
 
 //import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -25,8 +18,7 @@ import NewProfileModal from "./NewProfileModal";
 
 const Navbar = () => {
   const [collapse, setCollapse] = useState(false);
-  const [createModal, setCreateModal] = useState(false);
-  const [importModal, setImportModal] = useState(false);
+  const [modal, setModal] = useState(false);
   const [profileModal, setProfileModal] = useState(false);
 
   const onProfileClick = (e) => {
@@ -38,19 +30,11 @@ const Navbar = () => {
   };
 
   const onCreateClick = (e) => {
-    setCreateModal(true);
+    setModal(true);
   };
 
   const onCreateClose = (e) => {
-    setCreateModal(false);
-  };
-
-  const onImportClick = (e) => {
-    setImportModal(true);
-  };
-
-  const onImportClose = (e) => {
-    setImportModal(false);
+    setModal(false);
   };
   return (
     <div className="w-fit border-r border-slate-400 h-screen flex flex-col">
@@ -68,13 +52,6 @@ const Navbar = () => {
               Profile
             </Sidebar.Item>
             <Sidebar.Item
-              icon={ArrowDownOnSquareIcon}
-              onClick={(e) => onImportClick(e)}
-              href="#"
-            >
-              Import Analogy
-            </Sidebar.Item>
-            <Sidebar.Item
               href="#"
               icon={PlusIcon}
               onClick={(e) => onCreateClick(e)}
@@ -82,9 +59,8 @@ const Navbar = () => {
             >
               New Analogy
             </Sidebar.Item>
-            <NewAnalogModal modal={createModal} onCreateClose={onCreateClose} />
+            <NewAnalogModal modal={modal} onCreateClose={onCreateClose} />
             <NewProfileModal profileModal={profileModal} onProfileClose={onProfileClose} />
-            <Import modal={importModal} closeModal={onImportClose} />
           </Sidebar.ItemGroup>
         </Sidebar.Items>
       </Sidebar>
