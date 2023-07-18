@@ -2,6 +2,7 @@ import React from "react";
 import Cell from "./Cell";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { Tooltip } from "flowbite-react";
+import DeleteRowModal from "./DeleteRowModal";
 
 const Row = ({ row, rowIndex, handleEditData, removeRow }) => {
   return (
@@ -15,7 +16,7 @@ const Row = ({ row, rowIndex, handleEditData, removeRow }) => {
           rowIndex == 0 ? " hover:bg-white cursor-auto h-10" : "cursor-pointer"
         }`}
         data-row={rowIndex}
-        onClick={rowIndex == 0 ? null : removeRow}
+        onClick={rowIndex == 0 ? null : DeleteRowModal(removeRow)}
       >
         <Tooltip
           content="Delete Row"

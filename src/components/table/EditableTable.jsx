@@ -5,9 +5,13 @@ import { updateTableData } from "../../firebase_setup/table";
 import { Button } from "flowbite-react";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { debounce } from "lodash";
+import DeleteRowModal from "./DeleteRowModal.jsx";
+
 
 const EditableTable = ({ data, slug, user, tableId, indId }) => {
   const [tableData, setTableData] = useState(data);
+  const [rowModal, setRowModal] = useState(false);
+  const [tabModal, setTabModal] = useState(false);
 
   const handleAddRow = () => {
     let updatedTableData;
@@ -27,6 +31,14 @@ const EditableTable = ({ data, slug, user, tableId, indId }) => {
       return table.map((row) => row.concat(""));
     });
     //updateTableData(user.uid, tableId, tableData);
+  };
+
+  const onDeleteRowClose = (e) => {
+    setRowModal(false);
+  };
+
+  const onDeleteRowOpen = (e) => {
+    setRowModal(true);
   };
 
   const handleRemoveRow = (e) => {
@@ -100,7 +112,7 @@ const EditableTable = ({ data, slug, user, tableId, indId }) => {
                 handleEditData={handleEditData}
                 rowIndex={index}
                 row={row}
-                removeRow={handleRemoveRow}
+                removeRow={onDeleteRowOpen}
               />
             ))}
           </tbody>
@@ -117,6 +129,11 @@ const EditableTable = ({ data, slug, user, tableId, indId }) => {
         <PlusIcon className="w-4" />
         Add Row
       </Button>
+      <DeleteRowModal
+          onDeleteRowClose={onDeleteRowClose}
+          modal={rowModal}
+          handleRemoveRow={handleRemoveRow}
+        />
     </div>
   );
 };
