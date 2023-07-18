@@ -1,45 +1,43 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Card, Textarea, Button } from "flowbite-react";
+import { TextareaAutosize } from "react-autosize-textarea/lib/TextareaAutosize";
+import { updateTableNotes } from "../../firebase_setup/table";
+import { debounce } from "lodash";
 
-const NotesArea = ({ notes, setNotes, handleUpdateNotes }) => {
-  const [rows, setRows] = useState(1);
+const NotesArea = ({ notes, user, tableId, indId }) => {
+  const [notesValue, setNotesValue] = useState();
+
+  const handleNotesChange = (e) => {
+    setNotesValue(e.target.value);
+  };
 
   useEffect(() => {
-    if (notes) {
-      const initialRows = Math.floor(notes.split("\n").length);
-      setRows(initialRows > 1 ? initialRows : 1);
-    }
+    setNotesValue(notes);
   }, [notes]);
 
-  const handleNotesChange = (event) => {
-    setNotes(event.target.value);
-    const currentRows = handleRowChange(event);
-    setRows(currentRows);
-  };
+  const debouncedUpdateNotes = useCallback(
+    debounce(() => {
+      if (user && notesValue) {
+        updateTableNotes(user.uid, tableId, indId, notesValue);
+        console.log("yo");
+      }
+    }, 2000),
+    [notesValue, user]
+  ); // 1000 milliseconds = 1 second
 
-  const handleRowChange = (event) => {
-    const textareaLineHeight = 24; // adjust this value to match your line-height CSS
-    const previousRows = event.target.rows;
-    event.target.rows = 1; // reset the number of rows to 1
-    const currentRows = ~~(event.target.scrollHeight / textareaLineHeight);
-    if (currentRows === previousRows) {
-      event.target.rows = currentRows;
-    }
-    return currentRows;
-  };
-
-  
+  useEffect(() => {
+    debouncedUpdateNotes();
+    return debouncedUpdateNotes.cancel; // cleanup function
+  }, [notesValue, user, tableId, debouncedUpdateNotes]);
 
   return (
     <>
       <p className=" font-bold">Notes:</p>
-      <Textarea
-        className="h-auto resize-none"
-        
-        value={notes}
-        rows={rows}
+      <TextareaAutosize
+        className="rounded-lg bg-gray-100"
+        value={notesValue}
+        rows={5}
         onChange={(e) => handleNotesChange(e)}
-        onBlur={(e) => handleUpdateNotes(e)}
         placeholder="Use this space for notes, contexualization, or any ideas!"
       />
     </>

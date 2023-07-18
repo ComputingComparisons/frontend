@@ -13,7 +13,7 @@ const Create = () => {
   let params = useParams();
   const [tableData, setTableData] = useState();
   const [user, setUser] = useState(null);
-  const [notes, setNotes] = useState(null);
+  const [notes, setNotes] = useState();
   const navigate = useNavigate();
 
   const { user: contextUser } = useContext(AuthContext);
@@ -43,20 +43,6 @@ const Create = () => {
     }
   }, [tableData]);
 
-  const handleUpdateNotes = (event) => {
-    updateTableNotes(user.uid, params.analogId, notes);
-  };
-
-  const debouncedUpdateTableNotes = debounce((user, analogId, indId, notes) => {
-    updateTableNotes(user, analogId, indId, notes);
-  }, 10000); // 10000 milliseconds = 10 seconds
-
-  useEffect(() => {
-    if (user && notes) {
-      updateTableNotes(user.uid, params.analogId, params.indId, notes);
-    }
-  }, [tableData, user]);
-
   return (
     <>
       {tableData ? (
@@ -79,8 +65,9 @@ const Create = () => {
               ></EditableTable>
               <NotesArea
                 notes={notes}
-                setNotes={setNotes}
-                handleUpdateNotes={handleUpdateNotes}
+                user={user}
+                tableId={params.analogId}
+                indId={params.indId}
               />
             </div>
             {/*<BottomTabs className="absolute bottom-0 left-0" />*/}
