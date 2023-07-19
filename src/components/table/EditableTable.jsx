@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Row from "./Row";
 import RemoveColumn from "./RemoveColumn";
 import { updateTableData } from "../../firebase_setup/table";
@@ -8,6 +8,10 @@ import { debounce } from "lodash";
 
 const EditableTable = ({ data, slug, user, tableId, indId }) => {
   const [tableData, setTableData] = useState(data);
+
+  useEffect(() => {
+    setTableData(data);
+  }, [data]);
 
   const handleAddRow = () => {
     let updatedTableData;
@@ -72,15 +76,19 @@ const EditableTable = ({ data, slug, user, tableId, indId }) => {
     });
   };
 
-  const debouncedUpdateTableData = debounce((user, analogId, indId, data) => {
-    updateTableData(user, analogId, indId, data);
-  }, 1000); // 1000 milliseconds = 1 second
+  const debouncedUpdateTable = useCallback(
+    debounce(() => {
+      if (user && tableData) {
+        updateTableData(user.uid, tableId, indId, tableData);
+      }
+    }, 1000),
+    [tableData, user]
+  ); // 1000 milliseconds = 1 second
 
   useEffect(() => {
-    if (user && tableData) {
-      debouncedUpdateTableData(user.uid, tableId, indId, tableData);
-    }
-  }, [tableData, user, tableId]);
+    debouncedUpdateTable();
+    return debouncedUpdateTable.cancel; // cleanup function
+  }, [tableData, user, tableId, debouncedUpdateTable]);
 
   return (
     <div className="p-8">
