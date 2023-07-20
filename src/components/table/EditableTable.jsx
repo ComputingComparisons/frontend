@@ -37,6 +37,7 @@ const EditableTable = ({ data, slug, user, tableId, indId }) => {
   };
 
   const handleRemoveRow = (rowIndex) => {
+    console.log(rowIndex)
     let updatedTableData;
     setTableData((table) => {
       updatedTableData = [
