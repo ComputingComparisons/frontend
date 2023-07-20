@@ -10,7 +10,6 @@ import DeleteRowModal from "./DeleteRowModal.jsx";
 
 const EditableTable = ({ data, slug, user, tableId, indId }) => {
   const [tableData, setTableData] = useState(data);
- 
   const [tabModal, setTabModal] = useState(false);
 
   useEffect(() => {
