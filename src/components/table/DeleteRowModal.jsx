@@ -19,7 +19,7 @@ const DeleteRowModal = ({modal, onDeleteRowClose, handleRemoveRow, rowIndex}) =>
 
   const handleDeleteRow = useCallback(async () => {
     if (user) {
-      {handleRemoveRow(rowIndex)};
+      handleRemoveRow(rowIndex);
       onDeleteRowClose();
     } else {
       console.error("User not signed in.");
