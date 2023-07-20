@@ -10,7 +10,7 @@ import DeleteRowModal from "./DeleteRowModal.jsx";
 
 const EditableTable = ({ data, slug, user, tableId, indId }) => {
   const [tableData, setTableData] = useState(data);
-  const [rowModal, setRowModal] = useState(false);
+ 
   const [tabModal, setTabModal] = useState(false);
 
   useEffect(() => {
@@ -37,16 +37,7 @@ const EditableTable = ({ data, slug, user, tableId, indId }) => {
     //updateTableData(user.uid, tableId, tableData);
   };
 
-  const onDeleteRowClose = (e) => {
-    setRowModal(false);
-  };
-
-  const onDeleteRowOpen = (e) => {
-    setRowModal(true);
-  };
-
-  const handleRemoveRow = (e) => {
-    const rowIndex = Number(e.currentTarget.dataset.row);
+  const handleRemoveRow = (rowIndex) => {
     let updatedTableData;
     setTableData((table) => {
       updatedTableData = [
@@ -115,13 +106,15 @@ const EditableTable = ({ data, slug, user, tableId, indId }) => {
           </thead>
           <tbody>
             {tableData.map((row, index) => (
-              <Row
-                key={`row-${index}`}
-                handleEditData={handleEditData}
-                rowIndex={index}
-                row={row}
-                removeRow={onDeleteRowOpen}
-              />
+              <>
+                <Row
+                  key={`row-${index}`}
+                  handleEditData={handleEditData}
+                  rowIndex={index}
+                  row={row}
+                  handleRemoveRow={handleRemoveRow}
+                />
+              </>
             ))}
           </tbody>
         </table>
@@ -137,11 +130,7 @@ const EditableTable = ({ data, slug, user, tableId, indId }) => {
         <PlusIcon className="w-4" />
         Add Row
       </Button>
-      <DeleteRowModal
-          onDeleteRowClose={onDeleteRowClose}
-          modal={rowModal}
-          handleRemoveRow={handleRemoveRow}
-        />
+      
     </div>
   );
 };
