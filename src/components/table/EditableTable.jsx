@@ -10,7 +10,6 @@ import DeleteRowModal from "./DeleteRowModal.jsx";
 
 const EditableTable = ({ data, slug, user, tableId, indId }) => {
   const [tableData, setTableData] = useState(data);
-  const [tabModal, setTabModal] = useState(false);
 
   useEffect(() => {
     setTableData(data);
@@ -37,8 +36,7 @@ const EditableTable = ({ data, slug, user, tableId, indId }) => {
   };
 
   const handleRemoveRow = (rowIndex) => {
-    console.log(rowIndex)
-    let updatedTableData;
+     let updatedTableData;
     setTableData((table) => {
       updatedTableData = [
         ...table.slice(0, rowIndex),

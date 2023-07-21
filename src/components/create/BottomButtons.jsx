@@ -7,11 +7,24 @@ import {
   deleteIndividualById,
   getIndividualAnalogies,
 } from "../../firebase_setup/table";
+import DeleteTabModal from "../table/DeleteTabModal.jsx";
+
 const BottomButtons = ({ data, user }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [userAnalogs, setUserAnalogs] = useState([]);
   const [alert, setAlert] = useState(false);
   const tabsRef = useRef(null);
+  const [tabModal, setTabModal] = useState(false);
+  const [deleteID, setDeleteID] = useState();
+
+
+  const onDeleteTabClose = (e) => {
+    setTabModal(false);
+  };
+
+  const onDeleteTabOpen = (e) => {
+    setTabModal(true);
+  };
 
   let params = useParams();
   let navigate = useNavigate();
@@ -30,8 +43,7 @@ const BottomButtons = ({ data, user }) => {
     }
   };
 
-  const handleDeleteTab = async (e, id) => {
-    e.preventDefault();
+  const handleDeleteTab = async (id) => {
     if (userAnalogs.length > 1) {
       if (await deleteIndividualById(user.uid, params.analogId, id)) {
         setUserAnalogs(await getIndividualAnalogies(user.uid, params.analogId));
@@ -58,7 +70,12 @@ const BottomButtons = ({ data, user }) => {
               {i.data.title}
               <XMarkIcon
                 className="ml-2 h-5 w-5 hover:bg-blue-500 rounded-full"
-                onClick={(e) => handleDeleteTab(e, i.id)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  setDeleteID(i.id);
+                  onDeleteTabOpen();
+                }}
               />
             </Button>
           ))}
@@ -75,6 +92,12 @@ const BottomButtons = ({ data, user }) => {
           </div>
         </div>
       </div>
+      <DeleteTabModal
+        modal={tabModal}
+        onDeleteTabClose={onDeleteTabClose}
+        handleDeleteTab={handleDeleteTab}
+        deleteID={deleteID}
+      />
     </>
   );
 };
