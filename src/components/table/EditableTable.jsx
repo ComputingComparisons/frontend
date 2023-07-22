@@ -5,6 +5,8 @@ import { updateTableData } from "../../firebase_setup/table";
 import { Button } from "flowbite-react";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { debounce } from "lodash";
+import DeleteRowModal from "./DeleteRowModal.jsx";
+
 
 const EditableTable = ({ data, slug, user, tableId, indId }) => {
   const [tableData, setTableData] = useState(data);
@@ -33,9 +35,8 @@ const EditableTable = ({ data, slug, user, tableId, indId }) => {
     //updateTableData(user.uid, tableId, tableData);
   };
 
-  const handleRemoveRow = (e) => {
-    const rowIndex = Number(e.currentTarget.dataset.row);
-    let updatedTableData;
+  const handleRemoveRow = (rowIndex) => {
+     let updatedTableData;
     setTableData((table) => {
       updatedTableData = [
         ...table.slice(0, rowIndex),
@@ -103,13 +104,15 @@ const EditableTable = ({ data, slug, user, tableId, indId }) => {
           </thead>
           <tbody>
             {tableData.map((row, index) => (
-              <Row
-                key={`row-${index}`}
-                handleEditData={handleEditData}
-                rowIndex={index}
-                row={row}
-                removeRow={handleRemoveRow}
-              />
+              <>
+                <Row
+                  key={`row-${index}`}
+                  handleEditData={handleEditData}
+                  rowIndex={index}
+                  row={row}
+                  handleRemoveRow={handleRemoveRow}
+                />
+              </>
             ))}
           </tbody>
         </table>
@@ -125,6 +128,7 @@ const EditableTable = ({ data, slug, user, tableId, indId }) => {
         <PlusIcon className="w-4" />
         Add Row
       </Button>
+      
     </div>
   );
 };

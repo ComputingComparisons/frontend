@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useState}  from "react";
 import Cell from "./Cell";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { Tooltip } from "flowbite-react";
+import DeleteRowModal from "./DeleteRowModal";
 
-const Row = ({ row, rowIndex, handleEditData, removeRow }) => {
+const Row = ({ row, rowIndex, handleEditData, handleRemoveRow}) => {
+  const [rowModal, setRowModal] = useState(false);
+
+  const onDeleteRowClose = (e) => {
+    setRowModal(false);
+  };
+
+  const onDeleteRowOpen = (e) => {
+    setRowModal(true);
+  };
+
   return (
+    <>
     <tr
       className={`${
         rowIndex % 2 == 0 && rowIndex != 0 ? "bg-gray-100" : "bg-white"
@@ -15,7 +27,7 @@ const Row = ({ row, rowIndex, handleEditData, removeRow }) => {
           rowIndex == 0 ? " hover:bg-white cursor-auto h-10" : "cursor-pointer"
         }`}
         data-row={rowIndex}
-        onClick={rowIndex == 0 ? null : removeRow}
+        onClick={rowIndex == 0 ? null : onDeleteRowOpen}
       >
         <Tooltip
           content="Delete Row"
@@ -45,6 +57,13 @@ const Row = ({ row, rowIndex, handleEditData, removeRow }) => {
         </>
       ))}
     </tr>
+    <DeleteRowModal
+        modal={rowModal}
+        onDeleteRowClose={onDeleteRowClose}
+        handleRemoveRow={handleRemoveRow}
+        rowIndex={rowIndex}
+      />
+    </>
   );
 };
 
