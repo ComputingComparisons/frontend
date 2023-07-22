@@ -6,9 +6,19 @@ import { Button } from "flowbite-react";
 import { PlusIcon, DocumentDuplicateIcon } from "@heroicons/react/24/solid";
 import { debounce } from "lodash";
 import DeleteRowModal from "./DeleteRowModal.jsx";
+import TargetImport from "./TargetImport";
 
 const EditableTable = ({ data, slug, user, tableId, indId }) => {
   const [tableData, setTableData] = useState(data);
+  const [modal, setModal] = useState(false);
+
+  const onImportTargetClose = (e) => {
+    setModal(false);
+  };
+
+  const onImportTargetOpen = () => {
+    setModal(true);
+  };
 
   useEffect(() => {
     setTableData(data);
@@ -27,11 +37,25 @@ const EditableTable = ({ data, slug, user, tableId, indId }) => {
     //await updateTableData(user.uid, tableId, updatedTableData);
   };
 
-  const handleAddColumn = () => {
-    setTableData((table) => {
-      return table.map((row) => row.concat(""));
-    });
-    //updateTableData(user.uid, tableId, tableData);
+  const handleTargetDataReplace = (newColumnData) => {
+    // If the new column data has more rows, create new empty rows first.
+    if (newColumnData.length > tableData.length) {
+      const additionalRows = new Array(
+        newColumnData.length - tableData.length
+      ).fill(new Array(tableData[0].length).fill(""));
+      setTableData((table) => [...table, ...additionalRows]);
+    }
+    console.log(newColumnData);
+    console.log(tableData);
+    setTableData((table) =>
+      table.map((row, index) => {
+        if (index < newColumnData.length) {
+          return [newColumnData[index], ...row.slice(1)];
+        } else {
+          return row;
+        }
+      })
+    );
   };
 
   const handleRemoveRow = (rowIndex) => {
@@ -128,10 +152,19 @@ const EditableTable = ({ data, slug, user, tableId, indId }) => {
           <PlusIcon className="w-4" />
           <p className="hidden lg:inline">Add Row</p>
         </Button>
-        <Button className="ml-2 my-1 flex flex-row">
+        <Button
+          className="ml-2 my-1 flex flex-row"
+          onClick={onImportTargetOpen}
+        >
           <DocumentDuplicateIcon className="w-4" />
           <p className="hidden lg:inline">Import Target</p>
         </Button>
+        <TargetImport
+          modal={modal}
+          closeModal={onImportTargetClose}
+          user={user}
+          updateTarget={handleTargetDataReplace}
+        />
       </div>
     </div>
   );

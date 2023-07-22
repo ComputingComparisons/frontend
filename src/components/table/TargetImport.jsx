@@ -1,36 +1,54 @@
-import { Button, FileInput, Label, Modal, Tabs, Tooltip } from "flowbite-react";
-import React, { useContext, useRef, useState } from "react";
-import AuthContext from "../../AuthContext";
 import {
-  ArrowDownOnSquareIcon,
-  ArrowUpOnSquareIcon,
-  HomeIcon,
-} from "@heroicons/react/24/solid";
-import { importAnalogy, updateTableTitle } from "../../firebase_setup/table";
-import { useNavigate } from "react-router-dom";
+  Alert,
+  Button,
+  FileInput,
+  Label,
+  Modal,
+  Radio,
+  Select,
+  Tabs,
+  Tooltip,
+} from "flowbite-react";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import AuthContext from "../../AuthContext";
+import { InformationCircleIcon } from "@heroicons/react/24/solid";
+import {
+  getIndividualAnalogies,
+  importAnalogy,
+  updateTableTitle,
+} from "../../firebase_setup/table";
+import { useNavigate, useParams } from "react-router-dom";
 
-const TargetImport = ({ modal, closeModal }) => {
-  const [selectedFile, setSelectedFile] = useState();
-  const { user } = useContext(AuthContext);
+const TargetImport = ({ modal, closeModal, user, updateTarget }) => {
+  const [userAnalogs, setUserAnalogs] = useState();
+  const [selectedAnalogy, setSelectedAnalogy] = useState("");
 
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
+  const handleFileChange = (event) => {};
 
-  const handleUpload = async () => {
-    if (selectedFile) {
-      const reader = new FileReader();
-      reader.onload = async function (e) {
-        // 'e.target.result' contains the text of the file
-        const fileContent = e.target.result;
-        const jsonData = JSON.parse(fileContent);
-        await importAnalogy(user.uid, jsonData);
-        closeModal();
-        window.location.reload();
-      };
-      reader.readAsText(selectedFile);
+  const handleImport = (e) => {
+    if (selectedAnalogy != "") {
+      let data = userAnalogs.find((obj) => obj.id === selectedAnalogy).data
+        .data;
+      let newColumn = data.map((obj) => obj.header1);
+      updateTarget(newColumn);
+      console.log(newColumn);
+      closeModal();
     }
   };
+
+  let params = useParams();
+
+  let navigate = useNavigate();
+
+  useEffect(() => {
+    async function fetchData() {
+      if (user && modal === true) {
+        setUserAnalogs(await getIndividualAnalogies(user.uid, params.analogId));
+      }
+    }
+
+    fetchData();
+  }, [params, user, modal]);
 
   return (
     <>
@@ -41,22 +59,42 @@ const TargetImport = ({ modal, closeModal }) => {
           popup={true}
           onClose={(e) => closeModal(e)}
         >
-          <Modal.Header>Import Analogy</Modal.Header>
+          <Modal.Header>Import Target</Modal.Header>
           <Modal.Body>
-            <div className="max-w-md" id="fileUpload">
+            <Alert color="failure" icon={InformationCircleIcon}>
+              <span>
+                <p>
+                  <span className="font-medium">Info alert! </span>
+                  Importing a Target from another analogy will override your
+                  current Target!
+                </p>
+              </span>
+            </Alert>
+            <div className="max-w-md" id="select">
               <div className="mb-2 block">
-                <Label htmlFor="file" value="Upload file" />
+                <Label
+                  htmlFor="countries"
+                  value="Select the Analogy to copy the target from"
+                />
               </div>
-              <FileInput
-                helperText="Upload JSON to populate the table."
-                id="file"
-                accept=".json"
-                onChange={handleFileChange}
-              />
+              <Select
+                id="Analogy"
+                required
+                value={selectedAnalogy}
+                onChange={(e) => setSelectedAnalogy(e.target.value)}
+              >
+                <option value="">Select an analogy...</option>
+                {userAnalogs
+                  ? userAnalogs.map((i) => (
+                      <option key={i.id} value={i.id}>
+                        {i.data.title}
+                      </option>
+                    ))
+                  : null}
+              </Select>
             </div>
-
             <div className="w-full flex justify-center pt-2">
-              <Button onClick={handleUpload}>Import</Button>
+              <Button onClick={(e) => handleImport(e)}>Import Target</Button>
             </div>
           </Modal.Body>
         </Modal>
