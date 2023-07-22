@@ -4,6 +4,7 @@ import RemoveColumn from "./RemoveColumn";
 import { updateTableData } from "../../firebase_setup/table";
 import { Button } from "flowbite-react";
 import { PlusIcon, DocumentDuplicateIcon } from "@heroicons/react/24/solid";
+import { PlusIcon, DocumentDuplicateIcon } from "@heroicons/react/24/solid";
 import { debounce } from "lodash";
 import DeleteRowModal from "./DeleteRowModal.jsx";
 import TargetImport from "./TargetImport";
