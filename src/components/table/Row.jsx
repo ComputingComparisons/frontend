@@ -39,7 +39,7 @@ const Row = ({ row, rowIndex, handleEditData, removeRow }) => {
 
           {index == 0 ? (
             <td className="h-full">
-              <p className={`mx-3 ${rowIndex == 0 ? "hidden" : ""}`}>is like</p>
+              <p className={`mx-3`}>{rowIndex == 0 ? "" : "is like"}</p>
             </td>
           ) : null}
         </>

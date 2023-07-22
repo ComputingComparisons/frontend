@@ -67,6 +67,12 @@ const Header = ({ title, tableId, indId }) => {
               onChange={(e) => handleMainTitleChange(e)}
               maxLength={25}
               onBlur={(e) => handleUpdateMainTitle(e)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  e.target.blur();
+                }
+              }}
             ></textarea>
           </div>
           <p className=" self-center text-xl">/</p>
@@ -81,7 +87,13 @@ const Header = ({ title, tableId, indId }) => {
               onChange={(e) => handleContentChange(e)}
               maxLength={25}
               onBlur={(e) => handleUpdateHeader(e)}
-            ></textarea>
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  e.target.blur();
+                }
+              }}
+            />
           </div>
         </div>
         <div className="flex flex-row pr-4">

@@ -24,7 +24,11 @@ const BottomButtons = ({ data, user }) => {
   }, [params]);
 
   const handleNewTab = async () => {
-    const newAnalog = await createIndividualAnalogy(user.uid, params.analogId);
+    const newAnalog = await createIndividualAnalogy(
+      user.uid,
+      params.analogId,
+      "Analogy" + (userAnalogs.length + 1)
+    );
     if (newAnalog) {
       setUserAnalogs(userAnalogs.concat(newAnalog));
     }

@@ -43,6 +43,8 @@ const Create = () => {
     }
   }, [tableData]);
 
+  const importTarget = (e) => {};
+
   return (
     <>
       {tableData ? (
