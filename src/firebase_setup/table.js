@@ -125,8 +125,6 @@ export const updateTableData = async (userId, tableId, indId, newData) => {
 
 export const updateTableTitle = async (userId, tableId, indId, title) => {
   const docRef = doc(firestore, 'analogCollection', tableId, 'individualCollection', indId);
-  
-
   try {
     const document = await getDoc(docRef);
 
@@ -198,16 +196,24 @@ export const getIndividualAnalogies = async (userId, tableId) => {
   const querySnapshot = await getDocs(q);
   const analogies = [];
   querySnapshot.forEach((doc) => {
-    analogies.push({ path: `${tableId}/${doc.id}`, id: doc.id, data: doc.data() });
-  });
+    const tableData = doc.data();
 
-  analogies.sort((a, b) => a.data.title.localeCompare(b.data.date));
+    // Create a new array of rows with the keys in the desired order
+    const orderedRows = tableData.data.map(row => ({
+      header1: row.header1,
+      header2: row.header2,
+      header3: row.header3
+    }));
+    tableData.data = orderedRows;
+    analogies.push({ path: `${tableId}/${doc.id}`, id: doc.id, data: tableData });
+  });
+  analogies.sort(((a, b) => a.data.date_created.toDate() - b.data.date_created.toDate()));
   return analogies;
 };
 
-export const createIndividualAnalogy = async (userId, tableId) => {
+export const createIndividualAnalogy = async (userId, tableId, newTitle = "NewSourceAnalogy") => {
   const collectionRef = collection(firestore, 'analogCollection', tableId, 'individualCollection')
-  const title = "NewSourceAnalogy"
+  const title = newTitle;
   const headers = ["header1", "header2", "header3"];
   const data = [
     {header1: "Target Header", header2: "Source Header", header3: "Nuance Header"},

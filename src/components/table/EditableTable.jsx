@@ -3,13 +3,22 @@ import Row from "./Row";
 import RemoveColumn from "./RemoveColumn";
 import { updateTableData } from "../../firebase_setup/table";
 import { Button } from "flowbite-react";
-import { PlusIcon } from "@heroicons/react/24/solid";
+import { PlusIcon, DocumentDuplicateIcon } from "@heroicons/react/24/solid";
 import { debounce } from "lodash";
 import DeleteRowModal from "./DeleteRowModal.jsx";
-
+import TargetImport from "./TargetImport";
 
 const EditableTable = ({ data, slug, user, tableId, indId }) => {
   const [tableData, setTableData] = useState(data);
+  const [modal, setModal] = useState(false);
+
+  const onImportTargetClose = (e) => {
+    setModal(false);
+  };
+
+  const onImportTargetOpen = () => {
+    setModal(true);
+  };
 
   useEffect(() => {
     setTableData(data);
@@ -28,15 +37,29 @@ const EditableTable = ({ data, slug, user, tableId, indId }) => {
     //await updateTableData(user.uid, tableId, updatedTableData);
   };
 
-  const handleAddColumn = () => {
-    setTableData((table) => {
-      return table.map((row) => row.concat(""));
-    });
-    //updateTableData(user.uid, tableId, tableData);
+  const handleTargetDataReplace = (newColumnData) => {
+    // If the new column data has more rows, create new empty rows first.
+    if (newColumnData.length > tableData.length) {
+      const additionalRows = new Array(
+        newColumnData.length - tableData.length
+      ).fill(new Array(tableData[0].length).fill(""));
+      setTableData((table) => [...table, ...additionalRows]);
+    }
+    console.log(newColumnData);
+    console.log(tableData);
+    setTableData((table) =>
+      table.map((row, index) => {
+        if (index < newColumnData.length) {
+          return [newColumnData[index], ...row.slice(1)];
+        } else {
+          return row;
+        }
+      })
+    );
   };
 
   const handleRemoveRow = (rowIndex) => {
-     let updatedTableData;
+    let updatedTableData;
     setTableData((table) => {
       updatedTableData = [
         ...table.slice(0, rowIndex),
@@ -120,15 +143,29 @@ const EditableTable = ({ data, slug, user, tableId, indId }) => {
         <div>Please add rows and columns</div>
       )}
       <input type="hidden" name={slug} value={JSON.stringify(tableData)} />
-      <Button
-        type="button"
-        onClick={handleAddRow}
-        className=" ml-8 my-1 flex flex-row"
-      >
-        <PlusIcon className="w-4" />
-        Add Row
-      </Button>
-      
+      <div className="flex flex-row">
+        <Button
+          type="button"
+          onClick={handleAddRow}
+          className=" ml-8 my-1 flex flex-row"
+        >
+          <PlusIcon className="w-4" />
+          <p className="hidden lg:inline">Add Row</p>
+        </Button>
+        <Button
+          className="ml-2 my-1 flex flex-row"
+          onClick={onImportTargetOpen}
+        >
+          <DocumentDuplicateIcon className="w-4" />
+          <p className="hidden lg:inline">Import Target</p>
+        </Button>
+        <TargetImport
+          modal={modal}
+          closeModal={onImportTargetClose}
+          user={user}
+          updateTarget={handleTargetDataReplace}
+        />
+      </div>
     </div>
   );
 };
