@@ -72,7 +72,7 @@ const Create = () => {
                 indId={params.indId}
               />
             </div>
-            {/*<BottomTabs className="absolute bottom-0 left-0" />*/}
+            {/*Hello*/}
             <div className="fixed bottom-0 left-0 w-full z-50">
               <BottomButtons className="" user={user} />
             </div>
