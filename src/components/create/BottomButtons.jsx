@@ -16,7 +16,7 @@ const BottomButtons = ({ data, user }) => {
   const tabsRef = useRef(null);
   const [tabModal, setTabModal] = useState(false);
   const [deleteID, setDeleteID] = useState();
-
+  const [deleteName, setDeleteName] = useState();
 
   const onDeleteTabClose = (e) => {
     setTabModal(false);
@@ -25,6 +25,8 @@ const BottomButtons = ({ data, user }) => {
   const onDeleteTabOpen = (e) => {
     setTabModal(true);
   };
+
+  
 
   let params = useParams();
   let navigate = useNavigate();
@@ -78,6 +80,7 @@ const BottomButtons = ({ data, user }) => {
                   e.stopPropagation();
                   e.preventDefault();
                   setDeleteID(i.id);
+                  setDeleteName(i.data.title);
                   onDeleteTabOpen();
                 }}
               />
@@ -101,6 +104,7 @@ const BottomButtons = ({ data, user }) => {
         onDeleteTabClose={onDeleteTabClose}
         handleDeleteTab={handleDeleteTab}
         deleteID={deleteID}
+        deleteName={deleteName}
       />
     </>
   );
