@@ -20,8 +20,10 @@ const Home = () => {
   const [user, setUser] = useState(null);
   const [modal, setModal] = useState(false);
   const [deleteId, setDeleteId] = useState();
+  const [deleteTitle, setDeleteTitle] = useState();
   const navigate = useNavigate();
   const { user: contextUser } = useContext(AuthContext);
+  
 
   useEffect(() => {
     if (contextUser) {
@@ -93,6 +95,7 @@ const Home = () => {
                         e.preventDefault();
                         setDeleteId(i.id);
                         onDeleteOpen();
+                        setDeleteTitle(i.data.title)
                       }}
                     />
                   </div>
@@ -111,6 +114,7 @@ const Home = () => {
           onDeleteClose={onDeleteClose}
           modal={modal}
           deleteId={deleteId}
+          deleteTitle={deleteTitle}
         />
       </div>
     </div>
