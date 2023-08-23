@@ -20,7 +20,7 @@ const Home = () => {
   const [user, setUser] = useState(null);
   const [modal, setModal] = useState(false);
   const [deleteId, setDeleteId] = useState();
-  const[deleteTitle, setDeleteTitle] = useState();
+  const [deleteTitle, setDeleteTitle] = useState();
   const navigate = useNavigate();
   const { user: contextUser } = useContext(AuthContext);
   

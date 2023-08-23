@@ -6,12 +6,14 @@ import DeleteRowModal from "./DeleteRowModal";
 
 const Row = ({ row, rowIndex, handleEditData, handleRemoveRow}) => {
   const [rowModal, setRowModal] = useState(false);
+  const [deleteTitle, setDeleteTitle] = useState();
 
   const onDeleteRowClose = (e) => {
     setRowModal(false);
   };
 
   const onDeleteRowOpen = (e) => {
+    setDeleteTitle(row[0])
     setRowModal(true);
   };
 
@@ -62,6 +64,7 @@ const Row = ({ row, rowIndex, handleEditData, handleRemoveRow}) => {
         onDeleteRowClose={onDeleteRowClose}
         handleRemoveRow={handleRemoveRow}
         rowIndex={rowIndex}
+        deleteTitle={deleteTitle}
       />
     </>
   );
