@@ -1,7 +1,7 @@
 import { Button, Tabs, Toast, Tooltip } from "flowbite-react";
 import React, { useEffect, useRef, useState } from "react";
 import { PlusIcon, XMarkIcon } from "@heroicons/react/24/solid";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, redirect } from "react-router-dom";
 import {
   createIndividualAnalogy,
   deleteIndividualById,
@@ -9,14 +9,15 @@ import {
 } from "../../firebase_setup/table";
 import DeleteTabModal from "../table/DeleteTabModal.jsx";
 
-const BottomButtons = ({ data, user }) => {
+const BottomButtons = ({ user }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [userAnalogs, setUserAnalogs] = useState([]);
   const [alert, setAlert] = useState(false);
   const tabsRef = useRef(null);
   const [tabModal, setTabModal] = useState(false);
   const [deleteID, setDeleteID] = useState();
-
+  let params = useParams();
+  let navigate = useNavigate();
 
   const onDeleteTabClose = (e) => {
     setTabModal(false);
@@ -25,9 +26,6 @@ const BottomButtons = ({ data, user }) => {
   const onDeleteTabOpen = (e) => {
     setTabModal(true);
   };
-
-  let params = useParams();
-  let navigate = useNavigate();
 
   useEffect(() => {
     async function fetchData() {
@@ -44,6 +42,7 @@ const BottomButtons = ({ data, user }) => {
     );
     if (newAnalog) {
       setUserAnalogs(userAnalogs.concat(newAnalog));
+      window.location.href = `/create/${newAnalog[0].path}`;
     }
   };
 
@@ -89,7 +88,7 @@ const BottomButtons = ({ data, user }) => {
                 <PlusIcon
                   color="#00000"
                   className="h-6 hover:bg-slate-200 rounded-full "
-                  onClick={handleNewTab}
+                  onClick={(e) => handleNewTab()}
                 />
               </Tooltip>
             </div>

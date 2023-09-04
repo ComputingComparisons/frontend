@@ -23,11 +23,13 @@ const Signin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setEmail("");
-    setPassword("");
     const res = await signIn(email, password);
     if (res.error) seterror(res.error);
-    else setValidUser(true);
+    else {
+      setValidUser(true);
+      setEmail("");
+      setPassword("");
+    }
   };
 
   if (user) {

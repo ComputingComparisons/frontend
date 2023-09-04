@@ -11,25 +11,20 @@ import {
   updateMainTitle,
   updateTableTitle,
 } from "../../firebase_setup/table";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Export from "./Export";
 
-const Header = ({ title, tableId, indId }) => {
+const Header = ({ title, tableId, indId, main }) => {
   const [mainTitle, setMainTitle] = useState("");
   const [head, setHead] = useState(title);
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const params = useParams();
 
   useEffect(() => {
-    const fetchMainTitle = async () => {
-      try {
-        setMainTitle(await getMainTitle(user.uid, tableId));
-      } catch (error) {
-        console.error("Error fetching main title: ", error);
-      }
-    };
-    fetchMainTitle();
-  }, [user.uid]);
+    setMainTitle(main);
+    setHead(title);
+  }, [user.uid, params.id, title]);
 
   const handleContentChange = (event) => {
     setHead(event.target.value);
