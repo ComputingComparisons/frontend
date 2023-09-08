@@ -16,6 +16,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
+  const [name, setName] = useState("");
   const [error, seterror] = useState("");
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -27,7 +28,8 @@ const Signup = () => {
     } else {
       setEmail("");
       setPassword("");
-      const res = await signUp(email, password);
+      setName("");
+      const res = await signUp(email, password, name);
       if (res.error) seterror(res.error);
     }
   };
@@ -51,6 +53,17 @@ const Signup = () => {
                   </span>
                 </Alert>
               ) : null}
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="name" value="Your Full Name" />
+                </div>
+                <TextInput
+                  id="name"
+                  type="test"
+                  required={true}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="email1" value="Your email" />

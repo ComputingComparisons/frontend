@@ -17,11 +17,11 @@ import red_image from "../../assets/red_background.png";
 const Home = () => {
   let params = useParams();
   const [userAnalogs, setUserAnalogs] = useState();
-  const [user, setUser] = useState(null);
   const [modal, setModal] = useState(false);
   const [deleteId, setDeleteId] = useState();
   const navigate = useNavigate();
   const { user: contextUser } = useContext(AuthContext);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     if (contextUser) {
@@ -48,18 +48,18 @@ const Home = () => {
 
   const getBGImage = (card) => {
     const color = card.data.color;
-    if (color === 'red') {
-      return red_image
-    } else if(color === 'green') {
-      return green_image
-    } else if(color === 'orange') {
-      return amber_image
-    } else if(color === 'blue') {
-      return blue_image
-    } else if(color === 'pink') {
-      return pink_image
+    if (color === "red") {
+      return red_image;
+    } else if (color === "green") {
+      return green_image;
+    } else if (color === "orange") {
+      return amber_image;
+    } else if (color === "blue") {
+      return blue_image;
+    } else if (color === "pink") {
+      return pink_image;
     } else {
-      return cyan_image
+      return cyan_image;
     }
   };
 
@@ -75,7 +75,7 @@ const Home = () => {
                   imgSrc={getBGImage(i)}
                   imgAlt="Single colored image"
                   href={`/create/${i.id}`}
-                  >
+                >
                   <div className="flex flex-row w-full justify-between items-center">
                     <h5 className="tracking-tight text-gray-900 dark:text-white">
                       {i.data.title}
@@ -85,6 +85,9 @@ const Home = () => {
                             i.data.date_created.toDate().toLocaleString()
                           : "\n"}
                       </p>
+                      <span class="whitespace-nowrap rounded-full bg-purple-100 px-2.5 pt-0.5 text-xs text-purple-600">
+                        Classroom X
+                      </span>
                     </h5>
                     <EllipsisVerticalIcon
                       className="h-5 hover:bg-white rounded-full"
