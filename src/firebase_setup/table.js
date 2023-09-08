@@ -2,7 +2,7 @@ import { firestore } from "./firebase";
 import { getFirestore,addDoc, collection, getDoc, doc, updateDoc, query, where, getDocs, deleteDoc  } from "@firebase/firestore";
 
 // Add data to your "table" (collection) with headers, 3 columns, and the user's UID
-const getColor = () =>{
+export const getColor = () =>{
   const num = Math.floor(Math.random() * 6);
   if (num === 1) {
     return 'red'

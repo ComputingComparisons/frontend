@@ -13,6 +13,9 @@ import ResetPassword from './components/ResetPassword';
 import Redirect from './components/home/Redirect';
 import AuthContext from './AuthContext';
 import { ProtectedRoute } from './ProtectedRoute';
+import Classroom from './components/classrooms/Classroom';
+import AdminClassroom from './components/classrooms/AdminClassroom';
+import AdminClassroomList from './components/classrooms/AdminClasroomList';
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
@@ -29,6 +32,8 @@ root.render(
         <Route path="create" element={<ProtectedRoute><Create /></ProtectedRoute>} />
         <Route path="/create/:analogId" element={<ProtectedRoute><Redirect /></ProtectedRoute>} />
         <Route path="/create/:analogId/:indId" element={<ProtectedRoute><Create /></ProtectedRoute>} />
+        <Route path="/classrooms" element={<ProtectedRoute><AdminClassroomList /></ProtectedRoute>} />
+        <Route path="/adminclassrooms/:classroomId" element={<ProtectedRoute><AdminClassroom /></ProtectedRoute>} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

@@ -30,7 +30,7 @@ const analytics = getAnalytics(app);
 export const firestore = getFirestore(app);
 const auth = getAuth(app);
 
-export const signUp = async (email, password) => {
+export const signUp = async (email, password, name) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -41,6 +41,8 @@ export const signUp = async (email, password) => {
       await addDoc(collection(firestore, "users"), {
         uid: user.uid,
         email: user.email,
+        name: name,
+        classroom: "",
       });
       return true
     } catch (error) {

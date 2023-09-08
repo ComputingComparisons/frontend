@@ -19,7 +19,6 @@ const NewProfileModal = ({ profileModal, onProfileClose }) => {
   };
 
   if (!user) {
-    console.log(user);
     navigate("/login");
     return null;
   }
@@ -38,6 +37,14 @@ const NewProfileModal = ({ profileModal, onProfileClose }) => {
             <h3 className="text-xl font-medium text-gray-900 dark:text-white">
               Computing Comparisons Profile
             </h3>
+            <div className="flow-root">
+              <dl className="-my-3 divide-y divide-gray-100 text-sm">
+                <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+                  <dt className="font-medium text-gray-900">Email</dt>
+                  <dd className="text-gray-700 sm:col-span-2">{user.email}</dd>
+                </div>
+              </dl>
+            </div>
             <div className=" flex justify-center">
               <Button className="border border-black" onClick={handleLogout}>
                 Logout
